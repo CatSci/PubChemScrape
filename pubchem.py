@@ -133,6 +133,7 @@ if st.button('Search'):
         tmp = driver.find_elements(By.CSS_SELECTOR, 'span.breakword')
         driver.implicitly_wait(4)
         if tmp:
+            st.write(tmp)
             cid = tmp[1].text
             n_link = start_link.split('#')[0]
             link = n_link + 'compound/' + cid
