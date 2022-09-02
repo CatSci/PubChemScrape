@@ -107,7 +107,7 @@ if st.button('Search'):
     driver.get(start_link)
     driver.implicitly_wait(5)
     tmp = driver.find_elements(By.CSS_SELECTOR, 'span.breakword')
-    st.write(tmp)
+#     st.write(tmp)
     driver.implicitly_wait(4)
     cid = tmp[1].text
 
