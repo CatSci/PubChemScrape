@@ -50,15 +50,26 @@ def get_smile(data):
 
     return data
 
-def get_ghs(hazard):
-    ghs = driver.find_element(By.ID, 'GHS-Classification')
-    ghs_string = ghs.find_elements(By.CSS_SELECTOR, 'p')
-    
-    for t in ghs_string:
-        r = re.findall(r'H[0-9][0-9][0-9].*', str(t.text))
+def get_h_statemenmt(info, hazard):
+    for j in info:
+        r = re.findall(r'H[0-9][0-9][0-9].*', str(j.text))
         if r:
             temp = r[0].split(':')
             hazard[temp[0]] = temp[1]
+    return hazard
+
+def get_ghs(hazard):
+    try:
+        ghs = driver.find_element(By.ID, 'GHS-Classification')
+        ghs_temp = ghs.find_elements(By.CSS_SELECTOR, 'div.breakword')
+        hazard = get_h_statemenmt(ghs_temp, hazard)
+
+
+        ghs_string = ghs.find_elements(By.CSS_SELECTOR, 'p')
+        hazard = get_h_statemenmt(ghs_string, hazard)
+    except:
+        print('[INFO] GHS not found')
+
     
     return hazard
 
@@ -107,7 +118,6 @@ if st.button('Search'):
     driver.get(start_link)
     driver.implicitly_wait(5)
     tmp = driver.find_elements(By.CSS_SELECTOR, 'span.breakword')
-#     st.write(tmp)
     driver.implicitly_wait(4)
     cid = tmp[1].text
 
