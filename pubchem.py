@@ -121,7 +121,7 @@ if st.button('Search'):
         service = Service(ChromeDriverManager().install())
         driver = webdriver.Chrome(options = option, service= service)
     except:
-        st.write"[INFO] Driver not laoded")
+        st.write("[INFO] Driver not laoded")
 
 
 
