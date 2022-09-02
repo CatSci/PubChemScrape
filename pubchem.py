@@ -1,8 +1,10 @@
-from bs4 import BeautifulSoup
-import requests
+
 import re
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
+from selenium.webdriver import ChromeOptions
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
+# from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import warnings
 import streamlit as st 
@@ -11,7 +13,6 @@ warnings.simplefilter("ignore", UserWarning)
 
 
 cas_no = st.text_input('CAS Number')
-# st.write(cas_no)
 
 
 
@@ -92,16 +93,13 @@ def create_df_hazard(hazard):
     return df
 
 if st.button('Search'):
-    webdriver_path = "C:\Program Files (x86)\chromedriver.exe"
-
-# data = {}
 
 
     option = webdriver.ChromeOptions()
-    option.add_argument('headless')
-    driver = webdriver.Chrome(webdriver_path, options = option)
+    option.add_argument('--headless')
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(options = option, service= service)
 
-    # cas = "542-75-6"
 
 
     start_link = "https://pubchem.ncbi.nlm.nih.gov/#query=" + str(cas_no)
@@ -121,12 +119,10 @@ if st.button('Search'):
 
     df = create_df_data(data)
     st.write(df)    
-    # st.write(data)
 
     h_df = create_df_hazard(hazard)
     st.write(h_df)
 
-    # st.write(hazard)
 
 
 
