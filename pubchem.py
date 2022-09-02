@@ -21,7 +21,7 @@ def get_name(data):
         compound_name = name.text
         data['Name'] = compound_name
     except:
-        print("[INFO] Name is not avialable")
+        st.write("[INFO] Name is not avialable")
         data['Name'] = 'None'
 
     return data
@@ -42,7 +42,7 @@ def get_summary(data):
 
                         break
     except:
-        print("[INFO] Molecule Formula and Molecule weight not found")
+        st.write("[INFO] Molecule Formula and Molecule weight not found")
         data['Molecular Formula'] = 'None'
         data['Molecular Weight'] = 'None'
 
@@ -55,7 +55,7 @@ def get_smile(data):
         smile_code = smile.find_element(By.CSS_SELECTOR, 'p').text
         data['Smile'] = smile_code
     except:
-        print('[INFO] Smile not found')
+        st.write('[INFO] Smile not found')
         data['Smile'] = 'None'
 
     return data
@@ -78,7 +78,7 @@ def get_ghs(hazard):
         ghs_string = ghs.find_elements(By.CSS_SELECTOR, 'p')
         hazard = get_h_statemenmt(ghs_string, hazard)
     except:
-        print('[INFO] GHS not found')
+        st.write('[INFO] GHS not found')
 
     
     return hazard
@@ -121,7 +121,7 @@ if st.button('Search'):
         service = Service(ChromeDriverManager().install())
         driver = webdriver.Chrome(options = option, service= service)
     except:
-        print("[INFO] Driver not laoded")
+        st.write"[INFO] Driver not laoded")
 
 
 
@@ -148,7 +148,7 @@ if st.button('Search'):
             h_df = create_df_hazard(hazard)
             st.write(h_df)
     except:
-        print("[INFO] Compound not avialable")
+        st.write("[INFO] Compound not avialable")
 
     
 
