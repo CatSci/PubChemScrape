@@ -4,7 +4,6 @@ from selenium import webdriver
 from selenium.webdriver import ChromeOptions
 from selenium.webdriver.chrome.service import Service
 from webdriver_manager.chrome import ChromeDriverManager
-# from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 import warnings
 import streamlit as st 
@@ -139,11 +138,17 @@ if st.button('Search'):
     except:
         print("[INFO] Compound not avialable")
 
+    tmp = driver.find_elements(By.CSS_SELECTOR, 'span.breakword')
+    driver.implicitly_wait(4)
+    cid = tmp[1].text
+
+    n_link = start_link.split('#')[0]
+    link = n_link + 'compound/' + cid
+
 
     driver.get(link)
     data, hazard = main()
     quit_driver()
-
     df = create_df_data(data)
     st.write(df)    
 
