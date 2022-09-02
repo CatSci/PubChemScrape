@@ -136,21 +136,25 @@ if st.button('Search'):
             cid = tmp[1].text
             n_link = start_link.split('#')[0]
             link = n_link + 'compound/' + cid
+            n_link = start_link.split('#')[0]
+            link = n_link + 'compound/' + cid
+            driver.get(link)
+
+            data, hazard = main()
+            quit_driver()
+            df = create_df_data(data)
+            st.write(df)    
+
+            h_df = create_df_hazard(hazard)
+            st.write(h_df)
     except:
         print("[INFO] Compound not avialable")
 
-    n_link = start_link.split('#')[0]
-    link = n_link + 'compound/' + cid
+    
 
 
-    driver.get(link)
-    data, hazard = main()
-    quit_driver()
-    df = create_df_data(data)
-    st.write(df)    
+    
 
-    h_df = create_df_hazard(hazard)
-    st.write(h_df)
 
 
 
