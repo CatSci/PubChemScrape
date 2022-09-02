@@ -147,6 +147,8 @@ if st.button('Search'):
 
             h_df = create_df_hazard(hazard)
             st.write(h_df)
+        else:
+            st.write("[INFO] Compound not avialable")
     except:
         st.write("[INFO] Compound not avialable")
 
