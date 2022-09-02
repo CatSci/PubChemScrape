@@ -117,7 +117,8 @@ if st.button('Search'):
 
     driver.get(link)
     data, hazard = main()
-    driver.quit()
+    quit_driver()
+    st.write(hazard)
 
     df = create_df_data(data)
     st.write(df)    
