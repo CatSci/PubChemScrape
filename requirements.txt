@@ -1,0 +1,4 @@
+selenium
+webdriver-manager
+sbase
+streamlit==1.12.0
