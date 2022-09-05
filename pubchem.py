@@ -11,7 +11,12 @@ import pandas as pd
 warnings.simplefilter("ignore", UserWarning)
 
 
-cas_no = st.text_input('CAS Number')
+category = {'Green' : ['H302','H312','H332','H333','H303','H305', 'H313','H315','H316','H319','H320','H335'],
+           'Amber' : ['H301','H311','H331','H300','H310', 'H304', 'H314','H336'],
+            'Red' : ['H330','H340','H350','H360', 'H317', 'H334', 'H318', 'H341', 'H351', 'H361', 'H370', 'H371','H372','H373']}
+
+
+cas_no = st.text_input('CAS Number', '57-27-2')
 
 
 
@@ -65,7 +70,11 @@ def get_h_statemenmt(info, hazard):
         r = re.findall(r'H[0-9][0-9][0-9].*', str(j.text))
         if r:
             temp = r[0].split(':')
-            hazard[temp[0]] = temp[1]
+            if '(' in temp[0]:
+                z = temp[0].split(' ')
+                hazard[z[0]] = temp[1]
+            else:
+                hazard[temp[0]] = temp[1]
     return hazard
 
 def get_ghs(hazard):
@@ -82,6 +91,48 @@ def get_ghs(hazard):
 
     
     return hazard
+
+def check_category(category, hazard):
+    category_item = {}
+    tmp = list(hazard.keys())
+    for i in tmp:
+        if '(' in i:
+            x = i.split(' ')
+            y = x[0]
+        else:
+            y = i
+    
+        for j in category.keys():
+            if y in category[j]:
+                if j in category_item.keys():
+                    category_item[j].append(y)
+                else:
+                    category_item[j] = [y]
+                
+    
+    return category_item
+
+
+def format_color_groups(df):
+    colors = ['Yellow', 'Green', 'Red']
+    x = df.copy()
+    factors = list(category_item.keys())
+    i = 0
+    for i in range(df.shape[0]):
+        for factor in factors:
+             if df.iloc[i, 0] in category_item[factor]:
+                    if factor == 'Amber':
+                        style = f'background-color: {colors[0]}'
+                        x.loc[i, :] = style
+                    if factor == 'Green':
+                        color = colors[0]
+                        style = f'background-color: {colors[1]}'
+                        x.loc[i, :] = style
+                    if factor == 'Red':
+                        color = colors[0]
+                        style = f'background-color: {colors[2]}'
+                        x.loc[i, :] = style
+    return x
 
 
 def quit_driver():
@@ -128,10 +179,10 @@ if st.button('Search'):
     start_link = "https://pubchem.ncbi.nlm.nih.gov/#query=" + str(cas_no)
 
     driver.get(start_link)
-    driver.implicitly_wait(5)
+    driver.implicitly_wait(2)
     try:
         tmp = driver.find_elements(By.CSS_SELECTOR, 'span.breakword')
-        driver.implicitly_wait(4)
+        driver.implicitly_wait(2)
         if tmp:
             cid = tmp[1].text
             n_link = start_link.split('#')[0]
@@ -147,6 +198,17 @@ if st.button('Search'):
 
             h_df = create_df_hazard(hazard)
             st.write(h_df)
+
+            category_item = check_category(category, hazard)
+
+            st.write(h_df.style.apply(format_color_groups, axis=None))
+            # for i in category_item.keys():
+            #     if i == 'Green':
+            #         st.success(category_item[i], icon = "✅")
+            #     if i == 'Amber':
+            #         st.warning(category_item[i], icon = "⚠️")
+            #     if i == 'Red':
+            #         st.error(category_item[i],icon = "🚨")
         else:
             st.write("[INFO] Compound not avialable")
     except:
