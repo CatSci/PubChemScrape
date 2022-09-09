@@ -11,6 +11,8 @@ import pandas as pd
 warnings.simplefilter("ignore", UserWarning)
 
 
+
+
 category = {'Green' : ['H302','H312','H332','H333','H303','H305', 'H313','H315','H316','H319','H320','H335'],
            'Amber' : ['H301','H311','H331','H300','H310', 'H304', 'H314','H336'],
             'Red' : ['H330','H340','H350','H360', 'H317', 'H334', 'H318', 'H341', 'H351', 'H361', 'H370', 'H371','H372','H373']}
@@ -181,6 +183,7 @@ if st.button('Search'):
     driver.get(start_link)
     driver.implicitly_wait(2)
     try:
+        category_file = 'Categories.xlsx'
         tmp = driver.find_elements(By.CSS_SELECTOR, 'span.breakword')
         driver.implicitly_wait(2)
         if tmp:
@@ -201,7 +204,28 @@ if st.button('Search'):
 
             category_item = check_category(category, hazard)
 
-            st.write(h_df.style.apply(format_color_groups, axis=None))
+            ################
+            #    check this line
+            ###################
+
+
+            #st.write(h_df.style.apply(format_color_groups, axis=None))
+
+
+            # st.write(category_item)
+            st.subheader('Category:')
+            if 'Red' in category_item.keys():
+                cat = pd.read_excel(category_file, sheet_name= 'Red')
+                st.write(cat)
+            elif 'Amber' in category_item.keys():
+                cat = pd.read_excel(category_file, sheet_name= 'Amber')
+                st.write(cat)
+            elif 'Green' in category_item.keys():
+                cat = pd.read_excel(category_file, sheet_name= 'Green')
+                st.write(cat)
+            else:
+                cat = pd.read_excel(category_file, sheet_name= 'Special')
+                st.write(cat)
             # for i in category_item.keys():
             #     if i == 'Green':
             #         st.success(category_item[i], icon = "✅")
@@ -210,6 +234,7 @@ if st.button('Search'):
             #     if i == 'Red':
             #         st.error(category_item[i],icon = "🚨")
         else:
+            st.write('ha')
             st.write("[INFO] Compound not avialable")
     except:
         st.write("[INFO] Compound not avialable")
