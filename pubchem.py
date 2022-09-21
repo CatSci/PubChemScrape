@@ -254,8 +254,8 @@ if st.button('Search'):
 
             # # st.write(result)
 
-            # h_df = create_df_hazard(hazard)
-            # st.write(h_df)
+            h_df = create_df_hazard(hazard)
+            st.write(h_df)
 
             category_item = check_category(category, hazard)
 
