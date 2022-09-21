@@ -8,6 +8,11 @@ from selenium.webdriver.common.by import By
 import warnings
 import streamlit as st 
 import pandas as pd
+from bokeh.models.widgets import Button
+from bokeh.models import CustomJS
+from streamlit_bokeh_events import streamlit_bokeh_events
+
+import pyperclip
 warnings.simplefilter("ignore", UserWarning)
 
 
@@ -166,6 +171,34 @@ def create_df_hazard(hazard):
 
     return df
 
+# df = pd.DataFrame({"x": [1, 2, 3, 4], "y": ["a", "b", "c", "d"]})
+
+# st.dataframe(df)
+
+# copy_button = Button(label="Copy DF")
+# copy_button.js_on_event("button_click", CustomJS(args=dict(df=df.to_csv(sep='\t')), code="""
+#     navigator.clipboard.writeText(df);
+#     """))
+
+# no_event = streamlit_bokeh_events(
+#     copy_button,
+#     events="GET_TEXT",
+#     key="get_text",
+#     refresh_on_update=True,
+#     override_height=40,
+#     debounce_time=0)
+# if st.button('Press'):
+
+#     pyperclip.copy(df.to_csv())
+
+# no_event = streamlit_bokeh_events(
+#     copy_button,
+#     events="GET_TEXT",
+#     key="get_text",
+#     refresh_on_update=True,
+#     override_height=40,
+#     debounce_time=0)
+
 if st.button('Search'):
 
     try:
@@ -197,10 +230,32 @@ if st.button('Search'):
             data, hazard = main()
             quit_driver()
             df = create_df_data(data)
-            st.write(df)    
+            st.write(df) 
 
-            h_df = create_df_hazard(hazard)
-            st.write(h_df)
+            
+        
+
+
+
+
+            # copy button for molecule details
+            # st.write('copy button')
+            # copy_button = Button(label="Copy DF")
+            # copy_button.js_on_event("button_click", CustomJS(args=dict(df=df.to_csv(sep='\t')), code="""
+            #     navigator.clipboard.writeText(df);
+            #     """))  
+            # result = streamlit_bokeh_events(
+            # copy_button,
+            # events="GET_TEXT",
+            # key="get_text",
+            # refresh_on_update=True,
+            # override_height=75,
+            # debounce_time=0)
+
+            # # st.write(result)
+
+            # h_df = create_df_hazard(hazard)
+            # st.write(h_df)
 
             category_item = check_category(category, hazard)
 
@@ -233,11 +288,15 @@ if st.button('Search'):
             #         st.warning(category_item[i], icon = "⚠️")
             #     if i == 'Red':
             #         st.error(category_item[i],icon = "🚨")
+            
         else:
-            st.write('ha')
+            
             st.write("[INFO] Compound not avialable")
     except:
         st.write("[INFO] Compound not avialable")
+
+# if st.button('Press'):
+#     pyperclip.copy(df.to_csv())
 
     
 
