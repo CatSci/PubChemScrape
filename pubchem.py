@@ -12,7 +12,7 @@ import pandas as pd
 # from bokeh.models import CustomJS
 # from streamlit_bokeh_events import streamlit_bokeh_events
 
-import pyperclip
+# import pyperclip
 warnings.simplefilter("ignore", UserWarning)
 
 
