@@ -72,6 +72,20 @@ def get_smile(data):
 
     return data
 
+def get_density(data):
+    match_string = '°C'
+    try:
+        density_tag = driver.find_element(By.ID, 'Density')
+        denisty_content = density_tag.find_elements(By.CSS_SELECTOR, 'div.section-content-item')
+        for i in range(len(denisty_content)):
+            m = denisty_content[i].find_element(By.CSS_SELECTOR, 'p')
+            if match_string in m.text:
+                data['Density'] = m.text
+    except:
+        data['Density'] = None
+
+    return data
+
 def get_h_statemenmt(info, hazard):
     for j in info:
         r = re.findall(r'H[0-9][0-9][0-9].*', str(j.text))
@@ -152,6 +166,7 @@ def main():
     data = get_name(data)
     data = get_summary(data)
     data = get_smile(data)
+    data = get_density(data)
     hazard = get_ghs(hazard)
 
     return (data, hazard)
@@ -161,7 +176,8 @@ def create_df_data(data):
     df = pd.DataFrame({'Name': [data['Name']],
                     'Molecular Formula': [data['Molecular Formula']],
                     'Molecular Weight': [data['Molecular Weight']],
-                    'Smile': [data['Smile']]})
+                    'Smile': [data['Smile']],
+                    'Density': [data['Density']]})
 
     return df
 
