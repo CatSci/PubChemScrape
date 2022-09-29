@@ -229,13 +229,13 @@ def to_excel(df):
 
 if st.button('Search'):
 
-    try:
-        option = webdriver.ChromeOptions()
-        option.add_argument('--headless')
-        service = Service(ChromeDriverManager().install())
-        driver = webdriver.Chrome(options = option, service= service)
-    except:
-        st.write("[INFO] Driver not laoded")
+    #try:
+    option = webdriver.ChromeOptions()
+    option.add_argument('--headless')
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(options = option, service= service)
+    #except:
+     #   st.write("[INFO] Driver not laoded")
 
 
 
