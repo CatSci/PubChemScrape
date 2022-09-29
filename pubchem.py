@@ -199,33 +199,6 @@ def to_excel(df):
     processed_data = output.getvalue()
     return processed_data
 
-# df = pd.DataFrame({"x": [1, 2, 3, 4], "y": ["a", "b", "c", "d"]})
-
-# st.dataframe(df)
-
-# copy_button = Button(label="Copy DF")
-# copy_button.js_on_event("button_click", CustomJS(args=dict(df=df.to_csv(sep='\t')), code="""
-#     navigator.clipboard.writeText(df);
-#     """))
-
-# no_event = streamlit_bokeh_events(
-#     copy_button,
-#     events="GET_TEXT",
-#     key="get_text",
-#     refresh_on_update=True,
-#     override_height=40,
-#     debounce_time=0)
-# if st.button('Press'):
-
-#     pyperclip.copy(df.to_csv())
-
-# no_event = streamlit_bokeh_events(
-#     copy_button,
-#     events="GET_TEXT",
-#     key="get_text",
-#     refresh_on_update=True,
-#     override_height=40,
-#     debounce_time=0)
 
 if st.button('Search'):
 
@@ -260,47 +233,6 @@ if st.button('Search'):
             df = create_df_data(data)
             st.write(df)
 
-            
-
-
-
-            # copy button for molecule details
-
-            # copy_button = Button(label="Copy DF")
-            # copy_button.js_on_event("button_click", CustomJS(args=dict(df=df.to_csv(sep='\t')), code="""
-            #     navigator.clipboard.writeText(df);
-            #     """))
-
-            # no_event = streamlit_bokeh_events(
-            #     copy_button,
-            #     events="GET_TEXT",
-            #     key="get_text",
-            #     refresh_on_update=True,
-            #     override_height=40,
-            #     debounce_time=0)
-
-            # df_df= to_excel(df)
-
-            # st.download_button(label="Download",data=df_df,file_name='df.xlsx')
-
-
-
-
-            # st.write('copy button')
-            # copy_button = Button(label="Copy DF")
-            # copy_button.js_on_event("button_click", CustomJS(args=dict(df=df.to_csv(sep='\t')), code="""
-            #     navigator.clipboard.writeText(df);
-            #     """))  
-            # result = streamlit_bokeh_events(
-            # copy_button,
-            # events="GET_TEXT",
-            # key="get_text",
-            # refresh_on_update=True,
-            # override_height=75,
-            # debounce_time=0)
-
-            # # st.write(result)
-
             h_df = create_df_hazard(hazard)
             st.write(h_df)
 
@@ -311,10 +243,6 @@ if st.button('Search'):
             ###################
 
 
-            #st.write(h_df.style.apply(format_color_groups, axis=None))
-
-
-            # st.write(category_item)
             st.subheader('Category:')
             if 'Red' in category_item.keys():
                 cat = pd.read_excel(category_file, sheet_name= 'Red')
@@ -328,13 +256,6 @@ if st.button('Search'):
             else:
                 cat = pd.read_excel(category_file, sheet_name= 'Special')
                 st.write(cat)
-            # for i in category_item.keys():
-            #     if i == 'Green':
-            #         st.success(category_item[i], icon = "✅")
-            #     if i == 'Amber':
-            #         st.warning(category_item[i], icon = "⚠️")
-            #     if i == 'Red':
-            #         st.error(category_item[i],icon = "🚨")
 
 
             sheets = ['Info', 'Hazard Statements', 'Hazard Category']
