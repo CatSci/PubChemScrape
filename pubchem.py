@@ -12,6 +12,9 @@ import pandas as pd
 # from bokeh.models import CustomJS
 # from streamlit_bokeh_events import streamlit_bokeh_events
 
+from openpyxl import Workbook
+# import io
+# import base64
 # import pyperclip
 warnings.simplefilter("ignore", UserWarning)
 
@@ -187,6 +190,15 @@ def create_df_hazard(hazard):
 
     return df
 
+@st.cache
+def to_excel(df):
+    output = io.BytesIO()
+    writer = pd.ExcelWriter(output, engine='xlsxwriter')
+    df.to_excel(writer, sheet_name='Sheet1',index=False)
+    writer.save()
+    processed_data = output.getvalue()
+    return processed_data
+
 # df = pd.DataFrame({"x": [1, 2, 3, 4], "y": ["a", "b", "c", "d"]})
 
 # st.dataframe(df)
@@ -246,15 +258,34 @@ if st.button('Search'):
             data, hazard = main()
             quit_driver()
             df = create_df_data(data)
-            st.write(df) 
+            st.write(df)
 
             
-        
-
 
 
 
             # copy button for molecule details
+
+            # copy_button = Button(label="Copy DF")
+            # copy_button.js_on_event("button_click", CustomJS(args=dict(df=df.to_csv(sep='\t')), code="""
+            #     navigator.clipboard.writeText(df);
+            #     """))
+
+            # no_event = streamlit_bokeh_events(
+            #     copy_button,
+            #     events="GET_TEXT",
+            #     key="get_text",
+            #     refresh_on_update=True,
+            #     override_height=40,
+            #     debounce_time=0)
+
+            # df_df= to_excel(df)
+
+            # st.download_button(label="Download",data=df_df,file_name='df.xlsx')
+
+
+
+
             # st.write('copy button')
             # copy_button = Button(label="Copy DF")
             # copy_button.js_on_event("button_click", CustomJS(args=dict(df=df.to_csv(sep='\t')), code="""
@@ -304,6 +335,23 @@ if st.button('Search'):
             #         st.warning(category_item[i], icon = "⚠️")
             #     if i == 'Red':
             #         st.error(category_item[i],icon = "🚨")
+
+
+            sheets = ['Info', 'Hazard Statements', 'Hazard Category']
+
+
+            # writer = pd.ExcelWriter('data.xlsx', engine = 'xlsxwriter')
+            # df.to_excel(writer, sheet_name= sheets[0])
+            # h_df.to_excel(writer, sheet_name= sheets[1])
+            # cat.to_excel(writer, sheet_name= sheets[2])
+            # writer.save()
+
+            # st.download_button(
+            #     label = 'Download',
+            #     data = writer,
+            #     file_name = 'data.csv',
+            #     mime = 'text/csv',
+            # )
             
         else:
             
